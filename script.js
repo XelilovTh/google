@@ -161,6 +161,7 @@ function onUnlocked() {
     try { initMusicPlayer();      } catch(e) { console.error('initMusicPlayer:', e); }
     try { initSmoothScroll();     } catch(e) { console.error('initSmoothScroll:', e); }
     try { initAdminPanel();       } catch(e) { console.error('initAdminPanel:', e); }
+    try { initMemoryModal();      } catch(e) { console.error('initMemoryModal:', e); }
 
     if (typeof AOS !== 'undefined') {
         try { AOS.init({ duration:800, easing:'ease-out-cubic', once:true, offset:60 }); } catch(e) {}
@@ -568,19 +569,23 @@ function listenMemories() {
         const items = Object.entries(data).map(([k,v]) => ({id:k,...v}));
         items.sort((a,b) => (a.createdAt||0) - (b.createdAt||0));
         items.forEach((m, i) => {
-            const side = i % 2 === 0 ? 'left' : 'right';
             const div  = document.createElement('div');
-            div.className = `timeline-item ${side}`;
+            div.className = `timeline-item`;
+            // Store data for modal
+            div.dataset.title = m.title || '';
+            div.dataset.date  = m.date  || '';
+            div.dataset.desc  = m.desc  || '';
+            div.dataset.img   = m.img   || '';
+            div.dataset.emoji = m.emoji || '✨';
             div.innerHTML = `
                 <div class="timeline-content">
                     ${m.img ? `<div class="timeline-image">
-                        <img src="${esc(m.img)}" alt="${esc(m.title)}" onerror="this.parentElement.style.display='none'">
+                        <img src="${esc(m.img)}" alt="${esc(m.title)}" loading="lazy" onerror="this.parentElement.style.display='none'">
                         <div class="timeline-badge"><i class="fas fa-heart"></i></div>
                     </div>` : ''}
                     <div class="timeline-text">
                         <h3>${esc(m.title)} ${m.emoji||'✨'}</h3>
                         <span class="timeline-date">${esc(m.date||'')}</span>
-                        <p>${esc(m.desc||'')}</p>
                     </div>
                 </div>`;
             el.appendChild(div);
@@ -588,6 +593,8 @@ function listenMemories() {
 
         // Re-register anomaly observer for newly added items
         if (window._anomalyObs) observeTimelineItems(window._anomalyObs);
+        // Attach modal click listeners
+        attachMemoryModalListeners();
         if (typeof AOS !== 'undefined') AOS.refresh();
     });
 
@@ -622,8 +629,10 @@ function listenLetters() {
                 <div class="letter-card-inner">
                     <div class="letter-front">
                         <div class="letter-seal"><i class="fas fa-envelope-open-text"></i></div>
-                        <h3>${esc(letter.title||'Məktub')}</h3>
-                        <span class="letter-date">${esc(letter.to||'')} • ${dateStr}</span>
+                        <div class="letter-front-info">
+                            <h3>${esc(letter.title||'Məktub')}</h3>
+                            <span class="letter-date">${esc(letter.to||'')} • ${dateStr}</span>
+                        </div>
                     </div>
                     <div class="letter-back">
                         <h4>Əziz ${esc(letter.to||'')}...</h4>
@@ -1058,11 +1067,20 @@ function initSmoothScroll() {
     document.querySelectorAll('a[href^="#"]').forEach(a => {
         a.addEventListener('click', e => {
             e.preventDefault();
-            document.querySelector(a.getAttribute('href'))?.scrollIntoView({behavior:'smooth',block:'start'});
+            const target = document.querySelector(a.getAttribute('href'));
+            if (!target) return;
+            // Scroll so section top lands ~15% from viewport top (visually centred feel)
+            const offset = window.innerHeight * 0.15;
+            const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+            window.scrollTo({ top, behavior: 'smooth' });
         });
     });
     document.getElementById('scrollIndicator')?.addEventListener('click', () => {
-        document.getElementById('counter')?.scrollIntoView({behavior:'smooth'});
+        const target = document.getElementById('counter');
+        if (!target) return;
+        const offset = window.innerHeight * 0.15;
+        const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+        window.scrollTo({ top, behavior: 'smooth' });
     });
 
     const sectionIds = ['hero','counter','memories','letters','bucket','playlist'];
@@ -1075,6 +1093,71 @@ function initSmoothScroll() {
         });
     }, { threshold:0.4 });
     sectionIds.forEach(id => { const el = document.getElementById(id); if (el) obs.observe(el); });
+}
+
+// ══════════════════════════════════════════════════════
+//  MEMORY MODAL
+// ══════════════════════════════════════════════════════
+function initMemoryModal() {
+    const overlay = document.getElementById('memoryModal');
+    const closeBtn = document.getElementById('memoryModalClose');
+    if (!overlay || !closeBtn) return;
+
+    const close = () => {
+        overlay.style.animation = 'modalFadeIn .25s ease reverse';
+        setTimeout(() => { overlay.style.display = 'none'; overlay.style.animation = ''; }, 240);
+        document.body.style.overflow = '';
+    };
+
+    closeBtn.addEventListener('click', close);
+    overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && overlay.style.display !== 'none') close();
+    });
+}
+
+function openMemoryModal(title, date, desc, img, emoji) {
+    const overlay  = document.getElementById('memoryModal');
+    const imgWrap  = document.getElementById('memoryModalImgWrap');
+    const imgEl    = document.getElementById('memoryModalImg');
+    const titleEl  = document.getElementById('memoryModalTitle');
+    const dateEl   = document.getElementById('memoryModalDate');
+    const descEl   = document.getElementById('memoryModalDesc');
+    if (!overlay) return;
+
+    titleEl.textContent = `${title} ${emoji}`;
+    dateEl.textContent  = date;
+    descEl.textContent  = desc;
+
+    if (img) {
+        imgEl.src = img;
+        imgWrap.style.display = '';
+        imgWrap.classList.remove('no-img');
+    } else {
+        imgWrap.style.display = 'none';
+        imgWrap.classList.add('no-img');
+    }
+
+    overlay.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+function attachMemoryModalListeners() {
+    document.querySelectorAll('.timeline-item').forEach(card => {
+        // Remove old listener to prevent duplicates
+        card.replaceWith(card.cloneNode(true));
+    });
+    document.querySelectorAll('.timeline-item').forEach(card => {
+        card.addEventListener('click', () => {
+            openMemoryModal(
+                card.dataset.title,
+                card.dataset.date,
+                card.dataset.desc,
+                card.dataset.img,
+                card.dataset.emoji
+            );
+        });
+    });
 }
 
 // ══════════════════════════════════════════════════════
