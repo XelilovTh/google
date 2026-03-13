@@ -17,7 +17,7 @@ const firebaseConfig = {
 // ══════════════════════════════════════════════════════
 //  CONSTANTS
 // ══════════════════════════════════════════════════════
-const SECRET_PASSWORD = '2023';
+const SECRET_PASSWORD = 'miray';
 const START_DATE      = new Date('February 1, 2023 00:00:00').getTime();
 // SONGS — Firebase-dən dinamik yüklənir, ilkin boş
 let SONGS = [];
@@ -682,7 +682,7 @@ function toggleBucket(id, state) {
 function loadDefaultBucketItems() {
     const defaults = [
         {text:'Evlənmək',                              emoji:'💍', completed:false, order:1},
-        {text:'Qızımızın olması',                      emoji:'👶', completed:false, order:2},
+        {text:'Mirayımızın olması',                    emoji:'👶', completed:false, order:2},
         {text:'Birlikdə dünyaya səyahət etmək',        emoji:'🌍', completed:false, order:3},
         {text:'Öz evimizi dizayn etmək',               emoji:'🏡', completed:false, order:4},
         {text:'Birlikdə yeni yemək bişirməyi öyrənmək',emoji:'👩‍🍳',completed:false, order:5},
