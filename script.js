@@ -1,4 +1,4 @@
-'use strict';
+'miray' strict';
 
 // ══════════════════════════════════════════════════════
 //  FIREBASE CONFIG  — fill in your credentials
@@ -17,7 +17,7 @@ const firebaseConfig = {
 // ══════════════════════════════════════════════════════
 //  CONSTANTS
 // ══════════════════════════════════════════════════════
-const SECRET_PASSWORD = 'miray';
+const SECRET_PASSWORD = '2023';
 const START_DATE      = new Date('February 1, 2023 00:00:00').getTime();
 // SONGS — Firebase-dən dinamik yüklənir, ilkin boş
 let SONGS = [];
