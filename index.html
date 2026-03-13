@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Təhmaz 💛 Fidan - Bizim Dünyamız</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+</head>
+<body>
+
+<!-- ══════════ GLOBAL FIXED BACKGROUND LAYERS ══════════ -->
+<canvas id="globalStarCanvas"></canvas>
+<canvas id="shootingStarCanvas"></canvas>
+<canvas id="mouseSparkleCanvas"></canvas>
+<div id="heartContainer"></div>
+<div class="nebula-layer" aria-hidden="true">
+    <div class="nebula nebula-1"></div>
+    <div class="nebula nebula-2"></div>
+    <div class="nebula nebula-3"></div>
+    <div class="nebula nebula-4"></div>
+</div>
+
+<!-- ══════════ GRAND OPENING OVERLAY ══════════ -->
+<div id="grandOpening" class="grand-opening">
+    <div class="go-particles" id="goParticles"></div>
+    <div class="go-title" id="goTitle">İkimizin Dünyası</div>
+    <div class="go-subtitle" id="goSubtitle">Təhmaz 💛 Fidan</div>
+</div>
+
+<!-- ══════════ PASSWORD MODAL ══════════ -->
+<div id="passwordModal" class="password-modal">
+    <div class="modal-content">
+        <div class="modal-hearts">
+            <i class="fas fa-heart"></i>
+            <i class="fas fa-heart"></i>
+            <i class="fas fa-heart"></i>
+        </div>
+        <h2>🌍 Bizim Dünyaya Giriş 🌍</h2>
+        <p class="modal-subtitle">Sevgi açarı daxil edin...</p>
+        <div class="input-wrapper">
+            <input type="password" id="passwordInput" placeholder="Şifrəni yazın..." autocomplete="off">
+            <i class="fas fa-lock"></i>
+        </div>
+        <button id="enterBtn" class="enter-btn">
+            <span>Daxil Ol</span>
+            <i class="fas fa-arrow-right"></i>
+        </button>
+        <p id="errorMsg" class="error-msg"></p>
+        <p class="hint-text">✨ İpucu: Xəyalımızın adı ✨</p>
+    </div>
+</div>
+
+<!-- ══════════ MAIN CONTENT ══════════ -->
+<main id="mainContent" class="main-content hidden">
+
+    <!-- FLOATING NAV -->
+    <nav class="floating-nav" id="floatingNav">
+        <a href="#hero"     class="nav-dot" title="Əsas"><i class="fas fa-heart"></i></a>
+        <a href="#counter"  class="nav-dot" title="Sayğac"><i class="fas fa-clock"></i></a>
+        <a href="#memories" class="nav-dot" title="Xatirələr"><i class="fas fa-star"></i></a>
+        <a href="#letters"  class="nav-dot" title="Məktublar"><i class="fas fa-envelope"></i></a>
+        <a href="#bucket"   class="nav-dot" title="Arzular"><i class="fas fa-list-check"></i></a>
+        <a href="#playlist" class="nav-dot" title="Musiqi"><i class="fas fa-music"></i></a>
+        <button class="nav-dot admin-trigger" id="adminNavBtn" title="Admin Panel">
+            <i class="fas fa-crown"></i>
+        </button>
+    </nav>
+
+    <!-- ══ HERO ══ -->
+    <section id="hero" class="hero-section cinematic-section">
+        <div class="section-watermark" aria-hidden="true">T &amp; F</div>
+        <div class="hero-content" id="heroContent">
+
+            <!-- 1. Ən böyük, qızılı parıltılı başlıq -->
+            <h1 class="hero-main-title" data-aos="fade-down" data-aos-delay="200">
+                İkimizin Dünyası
+            </h1>
+
+            <!-- 2. Adlar -->
+            <p class="hero-couple" data-aos="fade-up" data-aos-delay="400">
+                Təhmaz❤Fidan
+            </p>
+
+            <!-- 3. Kiçik yazı -->
+            <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="550">
+                Bir hekayə, iki ürək, sonsuz sevgi
+            </p>
+
+        </div>
+
+        <!-- Scroll indicator — hero-content-dən kənarda, kifayət qədər aşağıda -->
+        <div class="scroll-indicator" id="scrollIndicator">
+            <span>Hekayəmizə bax</span>
+            <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="section-fade-bottom"></div>
+    </section>
+
+    <!-- ══ LOVE COUNTER ══ -->
+    <section id="counter" class="counter-section cinematic-section">
+        <div class="section-fade-top"></div>
+        <div class="section-watermark" aria-hidden="true">T &amp; F</div>
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-icon">🌙</span>
+                <h2>Birlikdəyik</h2>
+                <p>Hər anı bir xəzinədir...</p>
+            </div>
+            <div class="counter-grid" data-aos="fade-up" data-aos-delay="200">
+                <div class="counter-card">
+                    <div class="counter-icon"><i class="fas fa-calendar-alt"></i></div>
+                    <span class="counter-number" id="days">0</span>
+                    <span class="counter-label">Gün</span>
+                </div>
+                <div class="counter-card">
+                    <div class="counter-icon"><i class="fas fa-clock"></i></div>
+                    <span class="counter-number" id="hours">0</span>
+                    <span class="counter-label">Saat</span>
+                </div>
+                <div class="counter-card">
+                    <div class="counter-icon"><i class="fas fa-hourglass-half"></i></div>
+                    <span class="counter-number" id="minutes">0</span>
+                    <span class="counter-label">Dəqiqə</span>
+                </div>
+                <div class="counter-card">
+                    <div class="counter-icon"><i class="fas fa-heartbeat"></i></div>
+                    <span class="counter-number" id="seconds">0</span>
+                    <span class="counter-label">Saniyə</span>
+                </div>
+            </div>
+            <p class="counter-date" data-aos="fade-up" data-aos-delay="400">
+                <i class="fas fa-heart"></i> 1 Fevral 2023-dən bəri... <i class="fas fa-heart"></i>
+            </p>
+        </div>
+        <div class="section-fade-bottom"></div>
+    </section>
+
+    <!-- ══ MEMORIES ══ -->
+    <section id="memories" class="memories-section cinematic-section">
+        <div class="section-fade-top"></div>
+        <div class="section-watermark" aria-hidden="true">Xatirələr</div>
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-icon">✨</span>
+                <h2>Xatirələrimiz</h2>
+                <p>Hər anımız tarixdə iz buraxır...</p>
+            </div>
+            <div class="timeline" id="memoriesTimeline"></div>
+            <div id="memoriesEmpty" class="empty-state" style="display:none;">
+                <div class="empty-icon">🌱</div>
+                <p>Hələ ki, burada heç nə yoxdur,<br>gəl dünyamızı birlikdə quraq</p>
+            </div>
+        </div>
+        <div class="section-fade-bottom"></div>
+    </section>
+
+    <!-- ══ LETTERS ══ -->
+    <section id="letters" class="letters-section cinematic-section">
+        <div class="section-fade-top"></div>
+        <div class="section-watermark" aria-hidden="true">Sevgi</div>
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-icon">💌</span>
+                <h2>Sevgi Məktublarımız</h2>
+                <p>Ürəkdən ürəyə söz...</p>
+            </div>
+            <div class="letters-grid" id="lettersGrid"></div>
+            <div id="lettersEmpty" class="empty-state" style="display:none;">
+                <div class="empty-icon">📝</div>
+                <p>Hələ ki, burada heç nə yoxdur,<br>gəl dünyamızı birlikdə quraq</p>
+            </div>
+        </div>
+        <div class="section-fade-bottom"></div>
+    </section>
+
+    <!-- ══ BUCKET LIST ══ -->
+    <section id="bucket" class="bucket-section cinematic-section">
+        <div class="section-fade-top"></div>
+        <div class="section-watermark" aria-hidden="true">Arzular</div>
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-icon">🌟</span>
+                <h2>Arzularımız</h2>
+                <p>Birlikdə həyata keçirəcəyimiz xəyallar...</p>
+            </div>
+            <div class="bucket-list" id="bucketList"></div>
+            <div id="bucketEmpty" class="empty-state" style="display:none;">
+                <div class="empty-icon">⭐</div>
+                <p>Hələ ki, burada heç nə yoxdur,<br>gəl dünyamızı birlikdə quraq</p>
+            </div>
+        </div>
+        <div class="section-fade-bottom"></div>
+    </section>
+
+    <!-- ══ MUSIC PLAYER ══ -->
+    <section id="playlist" class="playlist-section cinematic-section">
+        <div class="section-fade-top"></div>
+        <div class="section-watermark" aria-hidden="true">♫</div>
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-icon">🎵</span>
+                <h2>Bizim Mahnılar</h2>
+                <p>Hər notda sevgimiz...</p>
+            </div>
+            <div class="music-player-wrapper" data-aos="fade-up" data-aos-delay="200">
+                <div class="music-player" id="musicPlayer">
+                    <div class="player-now-playing">
+                        <div class="player-disc" id="playerDisc">
+                            <div class="disc-inner"><i class="fas fa-music"></i></div>
+                        </div>
+                        <div class="player-track-info">
+                            <h4 id="currentSongTitle">Mahnı seçin</h4>
+                            <p id="currentSongArtist">—</p>
+                        </div>
+                    </div>
+                    <div class="player-progress-area">
+                        <span class="time-current" id="timeCurrent">0:00</span>
+                        <div class="progress-bar-container" id="progressContainer">
+                            <div class="progress-bar-track">
+                                <div class="progress-bar-fill" id="progressFill"></div>
+                            </div>
+                            <div class="progress-handle" id="progressHandle"></div>
+                        </div>
+                        <span class="time-total" id="timeTotal">0:00</span>
+                    </div>
+                    <div class="player-controls">
+                        <button class="ctrl-btn" id="prevBtn"><i class="fas fa-step-backward"></i></button>
+                        <button class="ctrl-btn play-btn" id="playBtn"><i class="fas fa-play" id="playIcon"></i></button>
+                        <button class="ctrl-btn" id="nextBtn"><i class="fas fa-step-forward"></i></button>
+                    </div>
+                    <div class="playlist-songs" id="playlistSongs"></div>
+                </div>
+            </div>
+        </div>
+        <div class="section-fade-bottom"></div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-hearts">
+                <i class="fas fa-heart"></i>
+                <i class="fas fa-heart"></i>
+                <i class="fas fa-heart"></i>
+            </div>
+            <h3>Təhmaz 💛 Fidan</h3>
+            <p>✨ Sonsuz sevgi hekayəmiz ✨</p>
+            <p class="footer-date">01.02.2023 - Sonsuzluğa...</p>
+        </div>
+    </footer>
+
+</main>
+
+<!-- ══════════ ADMIN PANEL — outside <main>, never z-clipped ══════════ -->
+<div id="adminPanel" class="admin-panel" style="display:none;">
+    <div class="admin-overlay" id="adminOverlay"></div>
+    <div class="admin-sidebar">
+        <div class="admin-header">
+            <div class="admin-title">
+                <i class="fas fa-crown"></i>
+                <span>Admin Panel</span>
+            </div>
+            <button class="admin-close" id="adminClose"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="admin-tabs">
+            <button class="admin-tab active" data-tab="memories"><i class="fas fa-star"></i> Xatirələr</button>
+            <button class="admin-tab" data-tab="letters"><i class="fas fa-envelope"></i> Məktublar</button>
+            <button class="admin-tab" data-tab="bucket"><i class="fas fa-list-check"></i> Arzular</button>
+            <button class="admin-tab" data-tab="songs"><i class="fas fa-music"></i> Mahnılar</button>
+        </div>
+        <div class="admin-section active" id="tab-memories">
+            <h3 class="admin-section-title">Yeni Xatirə əlavə et</h3>
+            <div class="form-group"><label>Başlıq</label><input type="text" id="memTitle" placeholder="Xatirənin adı..." class="admin-input"></div>
+            <div class="form-group"><label>Tarix</label><input type="text" id="memDate" placeholder="Fevral 2023..." class="admin-input"></div>
+            <div class="form-group"><label>Açıqlama</label><textarea id="memDesc" placeholder="O anı danışın..." class="admin-input" rows="3"></textarea></div>
+            <div class="form-group">
+                <label><i class="fas fa-image" style="margin-right:5px;color:var(--gold-dark)"></i>Şəkil linki (URL)</label>
+                <input type="url" id="memImg" placeholder="https://... şəklin linki" class="admin-input">
+            </div>
+            <div class="form-group"><label>Emoji</label><input type="text" id="memEmoji" placeholder="🌹" class="admin-input" maxlength="4"></div>
+            <button class="admin-btn" id="addMemoryBtn"><i class="fas fa-image"></i> Xatirə əlavə et</button>
+            <h3 class="admin-section-title" style="margin-top:25px;">Mövcud Xatirələr</h3>
+            <div id="adminMemoriesList" class="admin-items-list"></div>
+        </div>
+        <div class="admin-section" id="tab-letters">
+            <h3 class="admin-section-title">Yeni Məktub yaz</h3>
+            <div class="form-group"><label>Kimə</label>
+                <select id="letterTo" class="admin-input">
+                    <option value="Fidana">Fidana (Təhmazdan)</option>
+                    <option value="Təhmaza">Təhmaza (Fidandan)</option>
+                </select>
+            </div>
+            <div class="form-group"><label>Başlıq</label><input type="text" id="letterTitle" placeholder="Məktubun başlığı..." class="admin-input"></div>
+            <div class="form-group"><label>Məktub mətni</label><textarea id="letterContent" placeholder="Ürəyindən gələnləri yaz..." class="admin-input" rows="5"></textarea></div>
+            <div class="form-group"><label>İmza</label><input type="text" id="letterSign" placeholder="Sevgiylə, ..." class="admin-input"></div>
+            <button class="admin-btn" id="addLetterBtn"><i class="fas fa-paper-plane"></i> Məktub göndər</button>
+            <h3 class="admin-section-title" style="margin-top:25px;">Mövcud Məktublar</h3>
+            <div id="adminLettersList" class="admin-items-list"></div>
+        </div>
+        <div class="admin-section" id="tab-bucket">
+            <h3 class="admin-section-title">Yeni Arzu əlavə et</h3>
+            <div class="form-group"><label>Arzu mətni</label><input type="text" id="bucketText" placeholder="Birlikdə etmək istədiyimiz şey..." class="admin-input"></div>
+            <div class="form-group"><label>Emoji</label><input type="text" id="bucketEmoji" placeholder="🌍" class="admin-input" maxlength="4"></div>
+            <button class="admin-btn" id="addBucketBtn"><i class="fas fa-plus"></i> Arzu əlavə et</button>
+            <h3 class="admin-section-title" style="margin-top:25px;">Mövcud Arzular</h3>
+            <div id="adminBucketList" class="admin-items-list"></div>
+        </div>
+
+        <div class="admin-section" id="tab-songs">
+            <h3 class="admin-section-title"><i class="fas fa-music" style="margin-right:7px"></i>Yeni Mahnı əlavə et</h3>
+            <div class="form-group">
+                <label>Mahnının adı</label>
+                <input type="text" id="songTitle" placeholder="Perfect..." class="admin-input">
+            </div>
+            <div class="form-group">
+                <label>İfaçı</label>
+                <input type="text" id="songArtist" placeholder="Ed Sheeran..." class="admin-input">
+            </div>
+            <div class="form-group">
+                <label><i class="fas fa-link" style="margin-right:5px;color:var(--gold-dark)"></i>Audio fayl linki (URL)</label>
+                <input type="url" id="songUrl" placeholder="https://...mp3" class="admin-input">
+            </div>
+            <button class="admin-btn" id="addSongBtn">
+                <i class="fas fa-music"></i> Mahnı əlavə et
+            </button>
+            <h3 class="admin-section-title" style="margin-top:25px;">Mövcud Mahnılar</h3>
+            <div id="adminSongsList" class="admin-items-list"></div>
+        </div>
+    </div>
+</div>
+
+<div id="toastNotification" class="toast-notification"></div>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
