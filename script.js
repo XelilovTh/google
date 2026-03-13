@@ -4,14 +4,13 @@
 //  FIREBASE CONFIG  — fill in your credentials
 // ══════════════════════════════════════════════════════
 const firebaseConfig = {
-    apiKey:            "AIzaSyBiqbZ33bh7r6i2EVIqokTzxHNceV1vcnY",
-    authDomain:        "bizimdunyamiz-6e516.firebaseapp.com",
-    databaseURL:       "https://bizimdunyamiiz-default-rtdb.europe-west1.firebasedatabase.app/",   // https://YOUR-PROJECT.firebaseio.com
-    projectId:         "bizimdunyamiz-6e516",
-    storageBucket:     "bizimdunyamiz-6e516.firebasestorage.app",
-    messagingSenderId: "783236212110",
-    appId:             "1:783236212110:web:c4b0d32919d6bca29af0df",
-    measurementId: "G-5VW3Q1B0CT"
+    apiKey: "AIzaSyBQI38u4i4s0EB9h8NfEcdHj7J7l79m3M4",
+    authDomain: "bizim-dunyamiz-f4021.firebaseapp.com",
+    projectId: "bizim-dunyamiz-f4021",
+    storageBucket: "bizim-dunyamiz-f4021.firebasestorage.app",
+    messagingSenderId: "502219744541",
+    appId: "1:502219744541:web:7aec0494f04c53f2c42df4",
+    measurementId: "G-24KFBMQ09M"
 };
 
 // ══════════════════════════════════════════════════════
