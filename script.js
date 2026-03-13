@@ -6,12 +6,14 @@
 const firebaseConfig = {
     apiKey: "AIzaSyBQI38u4i4s0EB9h8NfEcdHj7J7l79m3M4",
     authDomain: "bizim-dunyamiz-f4021.firebaseapp.com",
+    databaseURL: "https://bizim-dunyamiz-f4021-default-rtdb.europe-west1.firebasedatabase.app",
     projectId: "bizim-dunyamiz-f4021",
     storageBucket: "bizim-dunyamiz-f4021.firebasestorage.app",
     messagingSenderId: "502219744541",
     appId: "1:502219744541:web:7aec0494f04c53f2c42df4",
     measurementId: "G-24KFBMQ09M"
 };
+
 
 // ══════════════════════════════════════════════════════
 //  CONSTANTS
