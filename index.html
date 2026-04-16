@@ -22,7 +22,7 @@
     </svg>
   </div>
   <div class="header-right">
-    <button class="btn-text" onclick="return false;">Help</button>
+    <button class="btn-text" onclick="handleHelp(event)">Help</button>
   </div>
 </header>
 
@@ -58,16 +58,16 @@
       </div>
 
       <p class="info-link-row">
-        <a href="#">Forgot email?</a>
+        <a href="#" onclick="handleForgotEmail(event)">Forgot email?</a>
       </p>
 
       <p class="info-link-row" style="line-height:1.6;">
         Not your computer? Use Guest mode to sign in privately.
-        <a href="#">Learn more</a>
+        <a href="#" onclick="handleLearnMore(event)">Learn more</a>
       </p>
 
       <div class="bottom-row">
-        <button class="btn-create" onclick="return false;">Create account</button>
+        <button class="btn-create" onclick="handleCreateAccount(event)">Create account</button>
         <button class="btn-next" onclick="handleEmailNext()">Next</button>
       </div>
 
@@ -102,7 +102,7 @@
       </div>
 
       <div class="bottom-row">
-        <a href="#" class="forgot-link">Forgot password?</a>
+        <a href="#" class="forgot-link" onclick="handleForgotPassword(event)">Forgot password?</a>
         <button class="btn-next" onclick="handlePasswordNext()">Next</button>
       </div>
 
@@ -128,12 +128,12 @@
     </select>
   </div>
   <div class="footer-links">
-    <a href="#">Help</a>
-    <a href="#">Privacy</a>
-    <a href="#">Terms</a>
+    <a href="#" onclick="handleHelp(event)">Help</a>
+    <a href="#" onclick="handlePrivacy(event)">Privacy</a>
+    <a href="#" onclick="handleTerms(event)">Terms</a>
   </div>
 </footer>
 
-<script src="aminake.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
